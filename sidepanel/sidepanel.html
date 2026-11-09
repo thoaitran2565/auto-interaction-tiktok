@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok Auto Interaction</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-wrapper">
+        <div class="heart-icon-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <div class="header-text">
+          <h1>TikTok Auto Interaction</h1>
+          <span class="subtitle">Thả tim & Bình luận thông minh bằng AI</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Tab Status Card -->
+      <section class="card tab-status-card" id="tabStatusCard">
+        <div class="status-indicator-row">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="tab-status-text" id="tabStatusText">Đang kiểm tra tab...</span>
+        </div>
+      </section>
+
+      <!-- Auto Interaction Flow Card -->
+      <section class="card auto-flow-card">
+        <div class="auto-flow-header">
+          <span class="auto-flow-title">⚡ Tự động tương tác liên tục</span>
+          <span class="auto-flow-badge" id="autoFlowProgress">Đã tương tác: 0 video</span>
+        </div>
+
+        <button id="btnToggleAutoFlow" class="btn btn-auto-flow" type="button">
+          <span class="btn-icon" id="autoFlowBtnIcon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </span>
+          <span class="btn-text" id="autoFlowBtnText">Bắt đầu Auto tương tác</span>
+          <span class="spinner" id="autoFlowSpinner" aria-hidden="true"></span>
+        </button>
+
+        <div class="auto-flow-settings-row">
+          <div class="form-group-half">
+            <label for="delaySelect" class="form-label-sm">Thời gian xem trước khi tương tác:</label>
+            <select id="delaySelect" class="form-select form-select-sm">
+              <option value="3">3 giây</option>
+              <option value="5" selected>5 giây (chuẩn)</option>
+              <option value="8">8 giây</option>
+              <option value="10">10 giây</option>
+              <option value="15">15 giây</option>
+            </select>
+          </div>
+          <div class="form-group-half">
+            <label for="maxVideosSelect" class="form-label-sm">Giới hạn video:</label>
+            <select id="maxVideosSelect" class="form-select form-select-sm">
+              <option value="0" selected>Không giới hạn</option>
+              <option value="10">10 video</option>
+              <option value="20">20 video</option>
+              <option value="50">50 video</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-checkbox auto-follow-wrapper">
+          <label class="checkbox-label">
+            <input type="checkbox" id="autoFollowCheck">
+            <span>➕ Tự động Follow kênh chưa theo dõi</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Anti-Bot Humanizer Card -->
+      <section class="card humanizer-card" id="humanizerCard">
+        <div class="humanizer-header" id="humanizerToggle">
+          <div class="humanizer-header-title">
+            <span class="humanizer-title-text">🛡️ Chống quét Bot (Humanizer)</span>
+            <label class="switch-toggle" title="Bật/Tắt chế độ mô phỏng tự nhiên" id="switchToggleWrapper">
+              <input type="checkbox" id="humanizerEnabledCheck" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <span class="toggle-arrow" id="humanizerArrow">▼</span>
+        </div>
+        <div class="humanizer-body" id="humanizerBody" style="display: none;">
+          <div class="form-group-checkbox">
+            <label class="checkbox-label">
+              <input type="checkbox" id="jitterCheck" checked>
+              <span>⏱️ Dao động thời gian xem (Jitter ±25%)</span>
+            </label>
+            <span class="form-tip">Ngẫu nhiên hóa thời gian xem mỗi video quanh mốc cài đặt (sàn tối thiểu 3s).</span>
+          </div>
+
+          <div class="form-group">
+            <label for="skipRateSelect" class="form-label">Tỷ lệ lướt qua ngẫu nhiên (Skip Rate):</label>
+            <select id="skipRateSelect" class="form-select">
+              <option value="0">0% (Tương tác 100% video)</option>
+              <option value="10">10% video</option>
+              <option value="15" selected>15% (Khuyên dùng - giống người thật)</option>
+              <option value="20">20% video</option>
+              <option value="30">30% video</option>
+            </select>
+            <span class="form-tip">Thỉnh thoảng chỉ xem ngắn 2-5s rồi lướt tiếp không tương tác để giữ an toàn tài khoản.</span>
+          </div>
+
+          <div class="form-group-checkbox">
+            <label class="checkbox-label">
+              <input type="checkbox" id="commentDiversityCheck" checked>
+              <span>💬 Đa dạng hóa bình luận khán giả</span>
+            </label>
+            <span class="form-tip">Ngẫu nhiên chọn trong top 3 - 5 bình luận hợp lệ thay vì luôn sao chép câu đầu tiên.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action Buttons Area -->
+      <section class="actions-grid">
+        <!-- Like Action Button -->
+        <button id="btnStartLike" class="btn btn-like" type="button">
+          <span class="btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </span>
+          <span class="btn-text">Thả tim video</span>
+          <span class="spinner" id="likeSpinner" aria-hidden="true"></span>
+        </button>
+
+        <!-- Auto Comment Action Button -->
+        <button id="btnStartComment" class="btn btn-comment" type="button">
+          <span class="btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+            </svg>
+          </span>
+          <span class="btn-text">Tự động bình luận</span>
+          <span class="spinner" id="commentSpinner" aria-hidden="true"></span>
+        </button>
+      </section>
+
+      <!-- Like Configuration Option -->
+      <section class="card config-card">
+        <label for="methodSelect" class="form-label">Cơ chế thả tim:</label>
+        <div class="select-wrapper">
+          <select id="methodSelect" class="form-select">
+            <option value="auto">✨ Tự động (Ưu tiên nút tim, dự phòng phím L)</option>
+            <option value="button">❤️ Nhấn nút thả tim (Kiểm tra đã like)</option>
+            <option value="key_l">⌨️ Nhấn phím 'L' trên bàn phím</option>
+            <option value="double_click">👆 Nhấn 2 lần vào video</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- AI Settings Collapsible Card -->
+      <section class="card settings-card" id="settingsCard">
+        <div class="settings-header" id="settingsToggle">
+          <div class="settings-header-title">
+            <span>⚙️ Cài đặt AI & Bình luận</span>
+          </div>
+          <span class="toggle-arrow" id="settingsArrow">▼</span>
+        </div>
+        <div class="settings-body" id="settingsBody">
+          <div class="form-group">
+            <label for="commentModeSelect" class="form-label">Chế độ chọn bình luận:</label>
+            <select id="commentModeSelect" class="form-select">
+              <option value="ai" selected>🤖 Tạo từ AI & nội dung video</option>
+              <option value="first_comment">💬 Lấy bình luận người xem (Top 1 - 5)</option>
+            </select>
+            <span class="form-tip">Tự động chọn ngẫu nhiên trong top các bình luận của khán giả (bỏ qua tác giả và ghim) khi chế độ chống bot được bật.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="apiKeyInput" class="form-label">Google Gemini API Key:</label>
+            <div class="input-with-btn">
+              <input type="password" id="apiKeyInput" class="form-input" placeholder="Dán Gemini API Key (tùy chọn)..." autocomplete="off">
+              <button id="btnTestApiKey" class="btn btn-outline-sm" type="button" title="Kiểm tra kết nối API Key">Kiểm tra</button>
+            </div>
+            <div id="apiKeyStatus" class="api-key-status" style="display: none;"></div>
+            <span class="form-tip">Bỏ trống sẽ dùng bộ phản hồi thông minh có sẵn.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="styleSelect" class="form-label">Phong cách bình luận:</label>
+            <select id="styleSelect" class="form-select">
+              <option value="friendly">😊 Thân thiện, gần gũi</option>
+              <option value="compliment">🌟 Khen ngợi, tích cực</option>
+              <option value="humorous">😂 Hài hước, dí dỏm</option>
+              <option value="question">🤔 Gợi mở, đặt câu hỏi</option>
+            </select>
+          </div>
+
+          <div class="form-group-checkbox">
+            <label class="checkbox-label">
+              <input type="checkbox" id="autoSubmitCheck" checked>
+              <span>Tự động nhấn gửi bình luận</span>
+            </label>
+          </div>
+
+          <button id="btnSaveSettings" class="btn btn-secondary btn-sm" type="button">Lưu cài đặt</button>
+        </div>
+      </section>
+
+      <!-- Status / Feedback Box -->
+      <section class="card status-box" id="statusBox" data-state="idle">
+        <div class="status-box-header">
+          <span class="status-icon" id="statusBoxIcon">💡</span>
+          <span class="status-title" id="statusBoxTitle">Sẵn sàng</span>
+        </div>
+        <p class="status-description" id="statusBoxDesc">
+          Mở một video TikTok tại tab đang hoạt động và bấm "Thả tim" hoặc "Tự động bình luận".
+        </p>
+
+        <!-- Preview Card for Generated Comment -->
+        <div class="comment-preview-card" id="commentPreviewCard" style="display: none;">
+          <div class="preview-badge" id="previewBadge">Bình luận AI vừa tạo:</div>
+          <blockquote class="preview-text" id="previewText"></blockquote>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>TikTok Auto Interaction v1.5.0 • MV3</span>
+    </footer>
+  </div>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>

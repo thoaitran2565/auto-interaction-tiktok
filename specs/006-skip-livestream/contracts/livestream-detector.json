@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LivestreamDetectorContract",
+  "description": "Message schema for livestream detection between sidepanel and content script",
+  "definitions": {
+    "CheckLivestreamRequest": {
+      "type": "object",
+      "required": ["action"],
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": ["CHECK_LIVESTREAM"]
+        },
+        "timeout": {
+          "type": "number",
+          "default": 2000
+        }
+      }
+    },
+    "CheckLivestreamResponse": {
+      "type": "object",
+      "required": ["success", "isLivestream"],
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "isLivestream": {
+          "type": "boolean"
+        },
+        "indicatorFound": {
+          "type": "string",
+          "enum": ["live_desc", "watch_live_button", "live_like_icon", "live_share_icon", "none"]
+        }
+      }
+    }
+  }
+}
+
